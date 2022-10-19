@@ -1,3 +1,26 @@
+# Trading Technologies Order Routing Client in C++
+This is a C++ FIX client for order management. It can connect to a Trading Technologies
+FIX gateway that will then communicate with an exchange such as the CME. For more
+information about TT order routing please see:
+https://library.tradingtechnologies.com/tt-fix/order-routing/fix-order-routing-overview.html
+
+A driver program is included that allows submission of commands for testing. These
+include normal trading commands such as placing and cancelling orders.
+
+After the client starts please wait for the "Logon" and "News" messages.
+
+Copyright 2022 Vincent Maciejewski, Quant Enterprises & M2 Tech
+Contact:
+v@m2te.ch
+mayeski@gmail.com
+https://www.linkedin.com/in/vmayeski/
+http://m2te.ch/
+
+A bit more information on the order manager is found on my blog:
+http://maye.ski/
+
+# Instructions
+
 =================
 Building QuickFix
 =================
