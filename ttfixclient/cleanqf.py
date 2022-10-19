@@ -3,7 +3,7 @@
 # THIS SOFTWARE IS OPEN SOURCE UNDER THE MIT LICENSE
 # SUPPORT IS AVAILABE FROM THE AUTHORS
 
-# Copyright 2022 Vincent Maciejewsk, Quant Enterprises & M2 Tech
+# Copyright 2022 Vincent Maciejewski, Quant Enterprises & M2 Tech
 # Contact:
 # v@m2te.ch
 # mayeski@gmail.com
