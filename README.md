@@ -21,9 +21,7 @@ http://maye.ski/
 
 # Instructions
 
-=================
 Building QuickFix
-=================
 
 First install openssl from https://www.openssl.org/
 to /usr/local
@@ -41,9 +39,8 @@ Then build QuickFix:
         make check
         sudo make install
 
-======================
 Building TT FIX Client
-======================
+
 
 Make sure that your include path contains the QuickFix configuration
 file config.h. It will normally be found in: quickfix-1.15.1/
@@ -57,4 +54,4 @@ Code was built using GCC 8.5.0
 
 Assuming you have installed QuickFix in /usr/local you can use this command to build:
 
-g++ -I<path to config.h> -std=c++17 TTFixClient.cpp main.cpp -o test -lquickfix
+g++ -Ipath_to_config_h -std=c++17 TTFixClient.cpp main.cpp -o test -lquickfix
