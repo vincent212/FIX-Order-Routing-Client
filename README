@@ -30,4 +30,8 @@ Once you have installed QuickFix run the Python script cleanqf.py
 to convert C++14 header to C++17. Edit the installation directory
 if you ahave not installed in /usr/local/
 
-Run the build script build.sh
+Code was built using GCC 8.5.0
+
+Assuming you have installed QuickFix in /usr/local you can use this command to build:
+
+g++ -I<path to config.h> -std=c++17 TTFixClient.cpp main.cpp -o test -lquickfix
