@@ -1,0 +1,33 @@
+=================
+Building QuickFix
+=================
+
+First install openssl from https://www.openssl.org/
+to /usr/local
+
+Download quickfix-1.15.1 from GitHub.
+
+If you want to disable file system I/O in QF please
+read README in qf_hack.
+
+Then build QuickFix:
+
+        ./bootstrap
+        ./configure --with-openssl=/usr/local
+        make -j8
+        make check
+        sudo make install
+
+======================
+Building TT FIX Client
+======================
+
+Make sure that your include path contains the QuickFix configuration
+file config.h. It will normally be found in: quickfix-1.15.1/
+In main.cpp it is used to assert if QuickFix build with SSL support.
+
+Once you have installed QuickFix run the Python script cleanqf.py
+to convert C++14 header to C++17. Edit the installation directory
+if you ahave not installed in /usr/local/
+
+Run the build script build.sh

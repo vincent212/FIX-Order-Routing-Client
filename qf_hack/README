@@ -1,0 +1,8 @@
+Place this file in
+
+quickfix-1.15.1/src/C++/
+
+to disable file system updates in QF.
+
+For this to work you must enable sequence number
+resets in settings file.

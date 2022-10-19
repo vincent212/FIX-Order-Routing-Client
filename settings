@@ -1,0 +1,57 @@
+#
+# FIX.4.2 Initiator Configuration
+#
+# for QuickFix C++ 1.15.1
+# for Trading Technologies FIX order routing
+#
+# https://library.tradingtechnologies.com/tt-fix/order-routing/configuring-client-connectivity.html
+#
+#
+
+[DEFAULT]
+
+FileLogPath=./log
+FileStorePath=./filestore
+ConnectionType=initiator
+ReconnectInterval=5
+SocketNodelay=Y
+StartTime=17:00:00
+EndTime=17:00:00
+UseLocalTime=Y
+TimestampPrecision=9
+HeartBtInt=30
+BeginString=FIX.4.4
+# log to stdout
+ScreenLogShowIncoming=N
+ScreenLogShowOutgoing=N
+ScreenLogShowEvents=N
+#
+SecurityExchange=CME
+# credentials
+Password=supersecret
+Account=Vincent
+# TT does not check TargetCompID
+TargetCompID=TARGET
+# set to chosen comp id when session was created in TT config
+SenderCompID=M2OM_UAT
+
+[SESSION]
+
+# connection no SSL
+#SocketConnectPort=11502
+#SocketConnectHost=fixorderrouting-ext-uat-cert.trade.tt
+
+# connection with SSL (if quickfix was built with --with-openssl)
+SocketConnectPort=11702
+SocketConnectHost=fixorderrouting-ext-uat-cert.trade.tt
+ClientCertificateFile=/home/vm/photon2203/ttclient/certificate/TTFIX.crt
+
+# set up message verification
+UseDataDictionary=Y
+DataDictionary=/home/vm/photon2203/ttclient/dictionary_cert/TT-FIX44.xml
+
+# sequence number resets
+# this is needed for FileStore hack to work
+ResetOnLogon=Y
+ResetOnLogout=Y
+ResetOnDisconnect=Y
