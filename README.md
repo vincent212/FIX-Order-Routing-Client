@@ -21,7 +21,8 @@ http://maye.ski/
 
 # Instructions
 
-Building QuickFix
+Building QuickFix:
+------------------
 
 First install openssl from https://www.openssl.org/
 to /usr/local
@@ -39,12 +40,12 @@ Then build QuickFix:
         make check
         sudo make install
 
-Building TT FIX Client
-
+Building TT FIX Client:
+-----------------------
 
 Make sure that your include path contains the QuickFix configuration
 file config.h. It will normally be found in: quickfix-1.15.1/
-In main.cpp it is used to assert if QuickFix build with SSL support.
+In main.cpp it is used to assert if QuickFix was build with SSL support.
 
 Once you have installed QuickFix run the Python script cleanqf.py
 to convert C++14 header to C++17. Edit the installation directory
@@ -55,3 +56,9 @@ Code was built using GCC 8.5.0
 Assuming you have installed QuickFix in /usr/local you can use this command to build:
 
 g++ -Ipath_to_config_h -std=c++17 TTFixClient.cpp main.cpp -o test -lquickfix
+
+QuickFix settings:
+------------------
+
+Settings for QuickFix are found in a file called "settings". In particular,
+code assumes that sequece numbers are reset as in the settings file.
