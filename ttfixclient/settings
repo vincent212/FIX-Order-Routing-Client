@@ -28,12 +28,12 @@ ScreenLogShowEvents=N
 #
 SecurityExchange=CME
 # credentials
-Password=supersecret
-Account=Vincent
+Password=your_password
+Account=your_cacount
 # TT does not check TargetCompID
 TargetCompID=TARGET
 # set to chosen comp id when session was created in TT config
-SenderCompID=M2OM_UAT
+SenderCompID=comp_id_you_created_in_fix_session
 
 [SESSION]
 
