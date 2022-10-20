@@ -1,45 +1,8 @@
-/*****************************************************************
-
-THIS SOFTWARE IS OPEN SOURCE UNDER THE MIT LICENSE
-SUPPORT IS AVAILABE FROM THE AUTHORS
-
-Copyright 2022 Vincent Maciejewski, Quant Enterprises & M2 Tech
-Contact:
-v@m2te.ch
-mayeski@gmail.com
-https://www.linkedin.com/in/vmayeski/
-http://m2te.ch/
-
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-
-https://opensource.org/licenses/MIT
-
-*****************************************************************/
-
 #pragma once
 
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 namespace m2::ttfix
 {
@@ -60,7 +23,8 @@ namespace m2::ttfix
     Rejected = 8,
     Pending_New = 10,    // A
     Expired = 12,        // C
-    Pending_Replace = 15 // E
+    Pending_Replace = 15,// E
+    UNKNOWN=99
   };
 
   static OrdStatus convertOrdStatus(const std::string &s)
@@ -90,7 +54,10 @@ namespace m2::ttfix
     case 'E':
       return OrdStatus::Pending_Replace;
     default:
-      throw std::runtime_error("unknown OrdStatus: " + s);
+    {
+      std::cerr << "*** unknown OrdStatus " << s << std::endl;
+      return OrdStatus::UNKNOWN;
+    }
     }
   }
 
@@ -120,6 +87,8 @@ namespace m2::ttfix
       return "OrdStatus::Expired";
     case OrdStatus::Pending_Replace:
       return "OrdStatus::Pending_Replace";
+    case OrdStatus::UNKNOWN:
+      return "OrdStatus::UNKNOWN";
     default:
       throw std::runtime_error("cannot convert OrdStatus to string");
     }

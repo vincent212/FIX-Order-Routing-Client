@@ -1,45 +1,8 @@
-/*****************************************************************
-
-THIS SOFTWARE IS OPEN SOURCE UNDER THE MIT LICENSE
-SUPPORT IS AVAILABE FROM THE AUTHORS
-
-Copyright 2022 Vincent Maciejewski, Quant Enterprises & M2 Tech
-Contact:
-v@m2te.ch
-mayeski@gmail.com
-https://www.linkedin.com/in/vmayeski/
-http://m2te.ch/
-
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-
-https://opensource.org/licenses/MIT
-
-*****************************************************************/
-
 #pragma once
 
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 namespace m2::ttfix
 {
@@ -60,9 +23,14 @@ namespace m2::ttfix
     Replaced, // 5
     Rejected = 8,
     Pending_New = 10,
-    Restated = 13,        // D
-    Pending_Replace = 14, // E
-    Trade = 15            // F
+    Expired = 12,             // C
+    Restated = 13,            // D
+    Pending_Replace = 14,     // E
+    Trade = 15,               // F
+    Trade_Correct = 16,       // G
+    Trade_Cancel = 17,        // H
+    Trigerred_Activated = 21, // L
+    UNKONWN = 99
   };
 
   static ExecType convertExecType(const std::string &s)
@@ -91,8 +59,17 @@ namespace m2::ttfix
       return ExecType::Pending_Replace;
     case 'F':
       return ExecType::Trade;
+    case 'G':
+      return ExecType::Trade_Correct;
+    case 'H':
+      return ExecType::Trade_Cancel;
+    case 'L':
+      return ExecType::Trigerred_Activated;
     default:
-      throw std::runtime_error("unknown ExecType: " + s);
+    {
+      std::cerr << "***> unknown ExecType: " << s << std::endl;
+      return ExecType::UNKONWN;
+    }
     }
   }
 
@@ -114,14 +91,22 @@ namespace m2::ttfix
       return "ExecType::Replaced";
     case ExecType::Rejected:
       return "ExecType::Rejected";
-    case ExecType::Restated:
-      return "ExecType::Restarted";
-    case ExecType::Trade:
-      return "ExecType::Trade";
     case ExecType::Pending_New:
       return "ExecType::Pending_New";
+    case ExecType::Restated:
+      return "ExecType::Restarted";
     case ExecType::Pending_Replace:
       return "ExecType::Pending_Replace";
+    case ExecType::Trade:
+      return "ExecType::Trade";
+    case ExecType::Trade_Correct:
+      return "ExecType::Trade_Correct";
+    case ExecType::Trade_Cancel:
+      return "ExecType::Trade_Cancel"; 
+    case ExecType::Trigerred_Activated:
+      return "ExecType::Trigerred_Activated"; 
+    case ExecType::UNKONWN:
+      return "ExecType::UNKONWN";
     default:
       throw std::runtime_error("cant convert to string ExecType");
     }
