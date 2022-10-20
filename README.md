@@ -4,6 +4,8 @@ FIX gateway that will then communicate with an exchange such as the CME. For mor
 information about TT order routing please see:
 https://library.tradingtechnologies.com/tt-fix/order-routing/fix-order-routing-overview.html
 
+QuickFix engine is used for the FIX protocol. https://en.wikipedia.org/wiki/QuickFIX
+
 A driver program is included that allows submission of commands for testing. These
 include normal trading commands such as placing and cancelling orders.
 
@@ -25,7 +27,7 @@ Building QuickFix:
 First install openssl from https://www.openssl.org/
 to /usr/local
 
-Download quickfix-1.15.1 from GitHub.
+Download quickfix-1.15.1 from GitHub. https://github.com/quickfix/quickfix
 
 If you want to disable file system I/O in QF please
 read README in qf_hack.
