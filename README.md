@@ -1,6 +1,6 @@
-# Trading Technologies Order Routing Client in C++
-This is a C++ FIX client for order management. It can connect to a Trading Technologies
-FIX gateway for order routing. Although it has only been testd with TT, with small modifications
+# FIX Order Routing Client in C++
+This is a C++ FIX client for order management. It has been tested with Trading Technologies
+FIX gateway for order routing. With small modifications
 it should work with the CQG gateway as well.
 
 For more information about TT order routing please see:
