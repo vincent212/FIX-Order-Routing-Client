@@ -6,8 +6,14 @@ it should work with the CQG gateway as well.
 For more information about TT order routing please see:
 https://library.tradingtechnologies.com/tt-fix/order-routing/fix-order-routing-overview.html
 
+Exchange connectivity available via TT
+https://www.tradingtechnologies.com/markets/markets-served/
+
 For more information about CQG order routing please see:
 https://help.cqg.com/apihelp/index.html#!Documents/fixconnectorderrouting.htm
+
+Exchange connectivity available via CQG
+https://www.cqg.com/partners/exchanges/tradable-exchanges
 
 The QuickFix engine is used for the FIX protocol. https://en.wikipedia.org/wiki/QuickFIX
 
