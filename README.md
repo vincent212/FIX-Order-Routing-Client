@@ -7,8 +7,6 @@ https://library.tradingtechnologies.com/tt-fix/order-routing/fix-order-routing-o
 A driver program is included that allows submission of commands for testing. These
 include normal trading commands such as placing and cancelling orders.
 
-After the client starts please wait for the "Logon" and "News" messages.
-
 Copyright 2022 Vincent Maciejewski, Quant Enterprises & M2 Tech
 Contact:
 v@m2te.ch
@@ -62,3 +60,9 @@ QuickFix settings:
 
 Settings for QuickFix are found in a file called "settings". In particular,
 code assumes that sequece numbers are reset as in the settings file.
+
+Running the program:
+--------------------
+
+After the client starts please wait for the "Logon" and "News" messages.
+Then select action from command line menu.
