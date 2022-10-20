@@ -89,9 +89,6 @@ int main(int argc, char **argv)
   initiator = new FIX::SocketInitiator(application, storeFactory, settings, logFactory);
 #endif
   initiator->start();
-  // get_thread_id may be useful to add to Initiator.h
-  // auto th = initiator->get_thread_id();
-  // std::cout << "SSLSocketInitiator thread id: " << th << std::endl;
   m2::ttfix::Driver driv(&application);
   driv.run();
   initiator->stop();
