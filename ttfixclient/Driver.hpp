@@ -78,9 +78,8 @@ namespace m2::ttfix
         try
         {
 #endif
-          switch (
-              char action = queryAction();
-              action)
+          char action = queryAction();
+          switch (action)
           {
           case '1':
             queryEnterOrder();

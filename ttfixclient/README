@@ -27,14 +27,21 @@ file config.h. It will normally be found in: quickfix-1.15.1/
 In main.cpp it is used to assert if QuickFix was build with SSL support.
 
 Once you have installed QuickFix run the Python script cleanqf.py
-to convert C++14 header to C++17. Edit the installation directory
+to convert C++11 headers to C++17. If you are planning to use C++11
+or C++14 this step is not necessary.
+
+Edit the installation directory
 if you ahave not installed in /usr/local/
 
 Code was built using GCC 8.5.0
 
 Assuming you have installed QuickFix in /usr/local you can use this command to build:
 
-g++ -Ipath_to_config_h -std=c++17 TTFixClient.cpp main.cpp -o test -lquickfix
+g++ -I../../quickfix-1.15.1 -std=c++11 TTFixClient.cpp main.cpp -o test -lquickfix
+or 
+g++ -I../../quickfix-1.15.1 -std=c++17 TTFixClient.cpp main.cpp -o test -lquickfix
+
+where -I../../quickfix-1.15.1 points to location of config.h
 
 QuickFix settings:
 ------------------
