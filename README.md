@@ -29,3 +29,4 @@ http://m2te.ch/
 
 A bit more information on the order manager is found on my blog:
 http://maye.ski/
+http://maye.ski/index.php/2022/10/20/open-source-fix-client-for-order-routing/
