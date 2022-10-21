@@ -98,20 +98,29 @@ void TTFixClient::toApp(FIX::Message &message, const FIX::SessionID &)
 
 void TTFixClient::onMessage(const FIX44::ExecutionReport &m, const FIX::SessionID &)
 {
-  const auto &status_str = m.getField(FIX::FIELD::OrdStatus);
+const auto &status_str = m.getField(FIX::FIELD::OrdStatus);
   const auto &status = convertOrdStatus(status_str);
   const auto &exec_typ_str = m.getField(FIX::FIELD::ExecType);
   const auto &exec_typ = convertExecType(exec_typ_str);
   const auto &cloid_ = m.getField(FIX::FIELD::ClOrdID);
   const auto &cloid = stoull(cloid_);
   const auto &ttoid = m.getField(FIX::FIELD::OrderID);
-  const auto &cmeoid_ = m.getField(FIX::FIELD::SecondaryOrderID);
-  const auto &cmeoid = stoull(cmeoid_);
+  std::string &&cmeoid_="";
+  uint64_t cmeoid = 0;
+  if (m.isSetField(FIX::FIELD::SecondaryOrderID))
+  {
+    cmeoid_ = m.getField(FIX::FIELD::SecondaryOrderID);
+    cmeoid = stoull(cmeoid_);
+  }
   const auto &qty = stoi(m.getField(FIX::FIELD::OrderQty));
   const auto &cum_qty = stoi(m.getField(FIX::FIELD::CumQty));
   const auto &leaves_qty = stoi(m.getField(FIX::FIELD::LeavesQty));
   const auto &txtime = m.getField(FIX::FIELD::TransactTime);
-  const auto &TTrecvtime = m.getField(16561);
+  std::string &&TTrecvtime="";
+  if (m.isSetField(16561))
+  {
+      TTrecvtime = m.getField(16561);
+  }
   const auto &sendingTime = m.getHeader().getField(FIX::FIELD::SendingTime);
   string &&px_str="";
   double px = 0;
@@ -124,7 +133,9 @@ void TTFixClient::onMessage(const FIX44::ExecutionReport &m, const FIX::SessionI
   }
   std::string &&text = "";
   if (m.isSetField(FIX::FIELD::Text))
+  {
     text = m.getField(FIX::FIELD::Text);
+  }
   cb->onExecutionReport(
       status,
       exec_typ,
