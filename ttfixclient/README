@@ -30,9 +30,6 @@ Once you have installed QuickFix run the Python script cleanqf.py
 to convert C++11 headers to C++17. If you are planning to use C++11
 or C++14 this step is not necessary.
 
-Edit the installation directory
-if you ahave not installed in /usr/local/
-
 Code was built using GCC 8.5.0
 
 Assuming you have installed QuickFix in /usr/local you can use this command to build:
