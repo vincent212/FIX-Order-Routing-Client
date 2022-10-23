@@ -84,6 +84,13 @@ namespace m2::ttfix
     {
     }
 
+    ~TTFixClient()
+    {
+      delete newOrderSingle;
+      delete orderCancelRequest;
+      delete cancelReplaceRequest;
+    }
+
     /**
      * @brief new order single
      * @see https://www.onixs.biz/fix-dictionary/4.4/msgType_D_68.html
@@ -149,6 +156,9 @@ namespace m2::ttfix
     std::string password;
     bool noNews = true;
     bool isLoggedOn = false;
+    FIX44::NewOrderSingle *newOrderSingle = 0;
+    FIX44::OrderCancelRequest *orderCancelRequest = 0;
+    FIX44::OrderCancelReplaceRequest *cancelReplaceRequest = 0;
 
     // Storing some order info for convenience of callers.
     // Ideally this map would not be here, however, it should

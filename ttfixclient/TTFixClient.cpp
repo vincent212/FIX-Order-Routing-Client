@@ -98,14 +98,14 @@ void TTFixClient::toApp(FIX::Message &message, const FIX::SessionID &)
 
 void TTFixClient::onMessage(const FIX44::ExecutionReport &m, const FIX::SessionID &)
 {
-const auto &status_str = m.getField(FIX::FIELD::OrdStatus);
+  const auto &status_str = m.getField(FIX::FIELD::OrdStatus);
   const auto &status = convertOrdStatus(status_str);
   const auto &exec_typ_str = m.getField(FIX::FIELD::ExecType);
   const auto &exec_typ = convertExecType(exec_typ_str);
   const auto &cloid_ = m.getField(FIX::FIELD::ClOrdID);
   const auto &cloid = stoull(cloid_);
   const auto &ttoid = m.getField(FIX::FIELD::OrderID);
-  std::string &&cmeoid_="";
+  std::string &&cmeoid_ = "";
   uint64_t cmeoid = 0;
   if (m.isSetField(FIX::FIELD::SecondaryOrderID))
   {
@@ -116,13 +116,13 @@ const auto &status_str = m.getField(FIX::FIELD::OrdStatus);
   const auto &cum_qty = stoi(m.getField(FIX::FIELD::CumQty));
   const auto &leaves_qty = stoi(m.getField(FIX::FIELD::LeavesQty));
   const auto &txtime = m.getField(FIX::FIELD::TransactTime);
-  std::string &&TTrecvtime="";
+  std::string &&TTrecvtime = "";
   if (m.isSetField(16561))
   {
-      TTrecvtime = m.getField(16561);
+    TTrecvtime = m.getField(16561);
   }
   const auto &sendingTime = m.getHeader().getField(FIX::FIELD::SendingTime);
-  string &&px_str="";
+  string &&px_str = "";
   double px = 0;
   bool has_px = false;
   if (m.isSetField(FIX::FIELD::LastPx))
@@ -256,24 +256,6 @@ uint64_t TTFixClient::sendNewOrderSingle(
   else
     throw runtime_error("invalid side");
 
-  FIX::OrdType ordType;
-  if (!strcmp(orderType, "MKT"))
-    ordType = FIX::OrdType_MARKET;
-  else if (!strcmp(orderType, "LIM"))
-    ordType = FIX::OrdType_LIMIT;
-  else if (!strcmp(orderType, "STP"))
-    ordType = FIX::OrdType_STOP;
-  else if (!strcmp(orderType, "STL"))
-    ordType = FIX::OrdType_STOP_LIMIT;
-  else
-    throw runtime_error("invalid order type");
-
-  FIX44::NewOrderSingle newOrderSingle(
-      oid,
-      side,
-      FIX::TransactTime(),
-      ordType);
-
   FIX::TimeInForce tif;
   if (!strcmp(timeInForce, "DAY"))
     tif = FIX::TimeInForce_DAY;
@@ -287,23 +269,63 @@ uint64_t TTFixClient::sendNewOrderSingle(
     tif = FIX::TimeInForce_GOOD_TILL_CROSSING;
   else
     throw runtime_error("invalid time in force");
-  newOrderSingle.set(tif);
 
-  if (ordType == FIX::OrdType_LIMIT || ordType == FIX::OrdType_STOP_LIMIT)
-    newOrderSingle.set(FIX::Price(price));
-  if (ordType == FIX::OrdType_STOP || ordType == FIX::OrdType_STOP_LIMIT)
-    newOrderSingle.set(FIX::StopPx(price));
-  newOrderSingle.set(FIX::OrderQty(qty));
-  newOrderSingle.set(FIX::Account(account));
-  newOrderSingle.set(FIX::SecurityExchange(exchange));
-  newOrderSingle.set(FIX::CFICode(cficode));
-  newOrderSingle.set(FIX::SecurityID(securityId));
-  newOrderSingle.set(FIX::Symbol(symbol));
-  newOrderSingle.set(FIX::SecurityIDSource("98")); // name
-  newOrderSingle.getHeader().setField(FIX::SenderCompID(senderCompId));
-  newOrderSingle.getHeader().setField(FIX::TargetCompID(targetCompId));
+  FIX::OrdType ordType;
+  if (!strcmp(orderType, "LIM"))
+    ordType = FIX::OrdType_LIMIT;
+  else if (!strcmp(orderType, "MKT"))
+    ordType = FIX::OrdType_MARKET;
+  else if (!strcmp(orderType, "STP"))
+    ordType = FIX::OrdType_STOP;
+  else if (!strcmp(orderType, "STL"))
+    ordType = FIX::OrdType_STOP_LIMIT;
+  else
+    throw runtime_error("invalid order type");
 
-  FIX::Session::sendToTarget(newOrderSingle);
+  if (newOrderSingle)
+  {
+    newOrderSingle->set(FIX::ClOrdID(oid));
+    newOrderSingle->set(side);
+    newOrderSingle->set(FIX::TransactTime(FIX::TransactTime()));
+    newOrderSingle->set(FIX::OrderQty(qty));
+    newOrderSingle->set(FIX::CFICode(cficode));
+    newOrderSingle->set(FIX::SecurityID(securityId));
+    newOrderSingle->set(FIX::Symbol(symbol));
+    newOrderSingle->set(ordType);
+    newOrderSingle->set(tif);
+
+    if (ordType == FIX::OrdType_LIMIT || ordType == FIX::OrdType_STOP_LIMIT)
+      newOrderSingle->set(FIX::Price(price));
+    if (ordType == FIX::OrdType_STOP || ordType == FIX::OrdType_STOP_LIMIT)
+      newOrderSingle->set(FIX::StopPx(price));
+  }
+  else
+  {
+    newOrderSingle = new FIX44::NewOrderSingle(
+        oid,
+        side,
+        FIX::TransactTime(),
+        ordType);
+
+    if (ordType == FIX::OrdType_LIMIT || ordType == FIX::OrdType_STOP_LIMIT)
+      newOrderSingle->set(FIX::Price(price));
+    if (ordType == FIX::OrdType_STOP || ordType == FIX::OrdType_STOP_LIMIT)
+      newOrderSingle->set(FIX::StopPx(price));
+    newOrderSingle->set(FIX::OrderQty(qty));
+    newOrderSingle->set(account);
+    newOrderSingle->set(exchange);
+    newOrderSingle->set(FIX::CFICode(cficode));
+    newOrderSingle->set(FIX::SecurityID(securityId));
+    newOrderSingle->set(FIX::Symbol(symbol));
+    newOrderSingle->set(FIX::SecurityIDSource("98")); // name
+    newOrderSingle->set(tif);
+    newOrderSingle->getHeader().setField(senderCompId);
+    newOrderSingle->getHeader().setField(targetCompId);
+  }
+
+  auto rc = FIX::Session::sendToTarget(*newOrderSingle);
+  if (!rc)
+    throw runtime_error("newOrderSingle not sent");
 
   ordInfo.emplace(
       make_pair(
@@ -334,18 +356,32 @@ uint64_t TTFixClient::sendCancelOrderRequest(
 
   const auto &oid = createCLOID();
 
-  // constructor takes required fields
-  FIX44::OrderCancelRequest orderCancelRequest(
-      FIX::OrigClOrdID(std::to_string(origClOrdId)),
-      FIX::ClOrdID(get<1>(oid)),
-      p->second.side,
-      FIX::TransactTime());
+  if (orderCancelRequest)
+  {
+    orderCancelRequest->set(FIX::OrigClOrdID(std::to_string(origClOrdId)));
+    orderCancelRequest->set(FIX::ClOrdID(get<1>(oid)));
+    orderCancelRequest->set(p->second.side);
+    orderCancelRequest->set(FIX::TransactTime());
+  }
+  else
+  {
 
-  orderCancelRequest.set(account);
-  orderCancelRequest.getHeader().setField(senderCompId);
-  orderCancelRequest.getHeader().setField(targetCompId);
+    // constructor takes required fields
 
-  FIX::Session::sendToTarget(orderCancelRequest);
+    orderCancelRequest = new FIX44::OrderCancelRequest(
+        FIX::OrigClOrdID(std::to_string(origClOrdId)),
+        FIX::ClOrdID(get<1>(oid)),
+        p->second.side,
+        FIX::TransactTime());
+
+    orderCancelRequest->set(account);
+    orderCancelRequest->getHeader().setField(senderCompId);
+    orderCancelRequest->getHeader().setField(targetCompId);
+  }
+
+  auto rc = FIX::Session::sendToTarget(*orderCancelRequest);
+  if (!rc)
+    throw runtime_error("newOrderSingle not sent");
 
   return get<0>(oid);
 }
@@ -369,32 +405,61 @@ uint64_t TTFixClient::sendCancelReplaceRequest(
 
   const auto &oid = createCLOID();
 
-  // constructor takes required fields
-  FIX44::OrderCancelReplaceRequest cancelReplaceRequest(
-      FIX::OrigClOrdID(std::to_string(origClOrdId)),
-      FIX::ClOrdID(get<1>(oid)),
-      p->second.side,
-      FIX::TransactTime(),
-      p->second.ordType);
+  if (cancelReplaceRequest)
+  {
 
-  double price_to_repl;
-  if (has_price)
-    price_to_repl = price;
-  else
-    price_to_repl = p->second.price;
-  if (p->second.ordType == FIX::OrdType_LIMIT || p->second.ordType == FIX::OrdType_STOP_LIMIT)
-    cancelReplaceRequest.set(FIX::Price(price_to_repl));
-  if (p->second.ordType == FIX::OrdType_STOP || p->second.ordType == FIX::OrdType_STOP_LIMIT)
-    cancelReplaceRequest.set(FIX::StopPx(price_to_repl));
-  if (qty > 0)
-    cancelReplaceRequest.set(FIX::OrderQty(qty));
-  else
-    cancelReplaceRequest.set(FIX::OrderQty(p->second.qty_remaining));
-  cancelReplaceRequest.set(account);
-  cancelReplaceRequest.getHeader().setField(senderCompId);
-  cancelReplaceRequest.getHeader().setField(targetCompId);
+    cancelReplaceRequest->set(FIX::OrigClOrdID(std::to_string(origClOrdId)));
+    cancelReplaceRequest->set(FIX::ClOrdID(get<1>(oid)));
+    cancelReplaceRequest->set(p->second.side);
+    cancelReplaceRequest->set(FIX::TransactTime());
+    cancelReplaceRequest->set(p->second.ordType);
 
-  FIX::Session::sendToTarget(cancelReplaceRequest);
+    double price_to_repl;
+    if (has_price)
+      price_to_repl = price;
+    else
+      price_to_repl = p->second.price;
+    if (p->second.ordType == FIX::OrdType_LIMIT || p->second.ordType == FIX::OrdType_STOP_LIMIT)
+      cancelReplaceRequest->set(FIX::Price(price_to_repl));
+    if (p->second.ordType == FIX::OrdType_STOP || p->second.ordType == FIX::OrdType_STOP_LIMIT)
+      cancelReplaceRequest->set(FIX::StopPx(price_to_repl));
+    if (qty > 0)
+      cancelReplaceRequest->set(FIX::OrderQty(qty));
+    else
+      cancelReplaceRequest->set(FIX::OrderQty(p->second.qty_remaining));
+  }
+  else
+  {
+
+    // constructor takes required fields
+    cancelReplaceRequest = new FIX44::OrderCancelReplaceRequest(
+        FIX::OrigClOrdID(std::to_string(origClOrdId)),
+        FIX::ClOrdID(get<1>(oid)),
+        p->second.side,
+        FIX::TransactTime(),
+        p->second.ordType);
+
+    double price_to_repl;
+    if (has_price)
+      price_to_repl = price;
+    else
+      price_to_repl = p->second.price;
+    if (p->second.ordType == FIX::OrdType_LIMIT || p->second.ordType == FIX::OrdType_STOP_LIMIT)
+      cancelReplaceRequest->set(FIX::Price(price_to_repl));
+    if (p->second.ordType == FIX::OrdType_STOP || p->second.ordType == FIX::OrdType_STOP_LIMIT)
+      cancelReplaceRequest->set(FIX::StopPx(price_to_repl));
+    if (qty > 0)
+      cancelReplaceRequest->set(FIX::OrderQty(qty));
+    else
+      cancelReplaceRequest->set(FIX::OrderQty(p->second.qty_remaining));
+    cancelReplaceRequest->set(account);
+    cancelReplaceRequest->getHeader().setField(senderCompId);
+    cancelReplaceRequest->getHeader().setField(targetCompId);
+  }
+
+  auto rc = FIX::Session::sendToTarget(*cancelReplaceRequest);
+  if (!rc)
+    throw runtime_error("newOrderSingle not sent");
 
   return get<0>(oid);
 }
