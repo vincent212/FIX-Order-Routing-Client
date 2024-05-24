@@ -27,8 +27,4 @@ mayeski@gmail.com
 https://www.linkedin.com/in/vmayeski/
 http://m2te.ch/
 
-A bit more information on the order manager is found on my blog:
-http://maye.ski/
-http://maye.ski/index.php/2022/10/20/open-source-fix-client-for-order-routing/
-
 Latency for NewOrderSigle send is under 7 micro seconds. Will go down to 3.5us if you compile QuickFix with C++17.
