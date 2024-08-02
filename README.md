@@ -27,4 +27,4 @@ mayeski@gmail.com
 https://www.linkedin.com/in/vmayeski/
 http://m2te.ch/
 
-Latency for NewOrderSigle send is under 7 micro seconds. Will go down to 3.5us if you compile QuickFix with C++17.
+Latency for NewOrderSigle 3.5us if you compile QuickFix with C++17.

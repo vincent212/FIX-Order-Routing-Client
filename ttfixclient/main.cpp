@@ -35,7 +35,7 @@ https://opensource.org/licenses/MIT
 
 *****************************************************************/
 
-#include "config.h" // used to check if QuickFix was built with SSL
+#include "quickfix/config.h" // used to check if QuickFix was built with SSL
 
 #include "quickfix/FileStore.h"
 #include "quickfix/SocketInitiator.h"

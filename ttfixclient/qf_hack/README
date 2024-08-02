@@ -1,6 +1,6 @@
 Place this file in
 
-quickfix-1.15.1/src/C++/
+quickfix/src/C++/
 
 to disable file system updates in QF.
 
