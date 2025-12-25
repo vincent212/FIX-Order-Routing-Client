@@ -3,6 +3,8 @@ This is a C++ FIX client for order management. It has been tested with Trading T
 FIX gateway for order routing. With small modifications
 it should work with the CQG gateway as well.
 
+For the full project documentation and blog post, see: https://m2te.ch/blog/opensource/fix-client
+
 For more information about TT order routing please see:
 https://library.tradingtechnologies.com/tt-fix/order-routing/fix-order-routing-overview.html
 
